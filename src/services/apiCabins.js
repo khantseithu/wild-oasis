@@ -10,3 +10,14 @@ export async function getCabins() {
 
 	return data;
 }
+
+export async function deleteCabinApi(id) {
+	const { data, error } = await supabase.from("cabin").delete().eq("id", id);
+
+	if (error) {
+		console.error(error);
+		throw new Error("Error deleting cabin");
+	}
+
+	return data;
+}
