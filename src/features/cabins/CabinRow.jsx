@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabinApi } from "../../services/apiCabins";
-import toast from "react-hot-toast";
+
 import CreateCabinForm from "./CreateCabinForm";
+import { useDeleteCabin } from "./useDeleteCabin";
+import { useCreateCabin } from "./useCreateCabin";
+
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 
 const TableRow = styled.div`
   display: grid;
@@ -55,22 +57,22 @@ const CabinRow = ({ cabin }) => {
     image,
     description,
   } = cabin;
-  const queryClient = useQueryClient();
+
   const [showForm, setShowForm] = useState(false);
 
-  const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
-    mutationFn: deleteCabinApi,
-    onSuccess: () => {
-      toast("Cabin deleted successfully");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (error) => {
-      toast(error.message);
-    },
-  });
+  const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isCreating, createCabin } = useCreateCabin();
 
+  function handleDuplicate() {
+    createCabin({
+      name: `Copy of ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+      description,
+    });
+  }
   return (
     <>
       <TableRow>
@@ -84,8 +86,15 @@ const CabinRow = ({ cabin }) => {
           <span>&mdash;</span>
         )}
         <div>
-          <button onClick={() => setShowForm(!showForm)}>Edit</button>
-          <button onClick={() => deleteCabin(cabinId)}>Delete</button>
+          <button disabled={isCreating} onClick={handleDuplicate}>
+            <HiSquare2Stack />
+          </button>
+          <button onClick={() => setShowForm(!showForm)}>
+            <HiPencil />
+          </button>
+          <button onClick={() => deleteCabin(cabinId)}>
+            <HiTrash />
+          </button>
         </div>
       </TableRow>
 
