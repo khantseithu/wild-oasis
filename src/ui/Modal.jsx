@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { HiXMark } from "react-icons/hi2";
+import { useState, createContext, useContext } from "react";
+import { cloneElement } from "react";
+import { createPortal } from "react-dom";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -50,17 +54,66 @@ const Button = styled.button`
   }
 `;
 
-const Modal = ({ children, onClose }) => {
+const ModalContext = createContext();
+
+const Modal = ({ children }) => {
+  const [openName, setOpenName] = useState("");
+
+  const open = setOpenName;
+
+  const close = () => setOpenName("");
+
   return (
-    <Overlay>
-      <StyledModal>
-        <Button onClick={onClose}>
-          <HiXMark />
-        </Button>
-        <div>{children}</div>
-      </StyledModal>
-    </Overlay>
+    <ModalContext.Provider value={{ open, close, openName }}>
+      {children}
+    </ModalContext.Provider>
   );
 };
+
+function Open({ children, opens: opensWindowName }) {
+  const { open } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => open(opensWindowName) });
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+
+  if (name !== openName) return null;
+  const ref = useOutsideClick(close);
+  return createPortal(
+    <Overlay>
+      <StyledModal ref={ref}>
+        <Button onClick={close}>
+          <HiXMark />
+        </Button>
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
+      </StyledModal>
+    </Overlay>,
+    document.body
+  );
+}
+
+Modal.Open = Open;
+Modal.Window = Window;
+
+// const Modal = ({ children, onClose }) => {
+//   const [openName, setOpenName] = useState("");
+
+//   const open = setOpenName;
+
+//   const close = () => setOpenName("");
+
+//   return (
+//     <Overlay>
+//       <StyledModal>
+//         <Button onClick={onClose}>
+//           <HiXMark />
+//         </Button>
+//         <div>{children}</div>
+//       </StyledModal>
+//     </Overlay>
+//   );
+// };
 
 export default Modal;
