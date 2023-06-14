@@ -89,8 +89,12 @@ function Row({ children }) {
   );
 }
 
-function Body() {
-  return null;
+function Body({ data, render, emptyText = "No data found" }) {
+  return (
+    <StyledBody role="rowgroup">
+      {data.length > 0 ? data.map(render) : <Empty>{emptyText}</Empty>}
+    </StyledBody>
+  );
 }
 
 Table.Header = Header;

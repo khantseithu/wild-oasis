@@ -54,10 +54,12 @@ const CabinTable = () => {
         <div>Discount</div>
         <div></div>
       </Table.Header>
-      <Table.Body></Table.Body>
-      {cabins.map((cabin) => {
-        return <CabinRow key={cabin.id} cabin={cabin} />;
-      })}
+      <Table.Body
+        data={cabins}
+        render={(cabin) => {
+          return <CabinRow key={cabin.id} cabin={cabin} />;
+        }}
+      />
     </Table>
   );
 };
