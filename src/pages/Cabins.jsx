@@ -5,6 +5,7 @@ import { getCabins } from "../services/apiCabins";
 import { useEffect, useState } from "react";
 import CabinTable from "../features/cabins/CabinTable";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import AddCabin from "../features/cabins/AddCabin";
 
 function Cabins() {
   const [showForm, setShowForm] = useState(false);
@@ -22,9 +23,10 @@ function Cabins() {
 
       <Row>
         <CabinTable />
-
+        <AddCabin />
+        {/*
         <Button onClick={() => setShowForm(!showForm)}>Add cabin</Button>
-        {showForm && <CreateCabinForm />}
+        {showForm && <CreateCabinForm />}*/}
       </Row>
     </>
   );
