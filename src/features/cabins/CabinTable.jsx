@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
+
 import { getCabins } from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
@@ -40,10 +42,24 @@ const CabinTable = () => {
     queryKey: ["cabins"],
     queryFn: getCabins,
   });
+  const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
+  if (!cabins.length) return <Empty resourceName="cabins" />;
 
   if (error) return alert("An error has occurred: " + error.message);
+
+  // 1) Filter
+  const filteredValue = searchParams.get("discount") || "all";
+
+  let filteredCabins;
+  if (filteredValue === "all") {
+    filteredCabins = cabins;
+  } else if (filteredValue === "no-discount") {
+    filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+  } else {
+    filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
+  }
 
   return (
     // DON'T FORGET TO PUT THIS MENUS
@@ -58,7 +74,8 @@ const CabinTable = () => {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={cabins}
+          // data={cabins}
+          data={filteredCabins}
           render={(cabin) => {
             return <CabinRow key={cabin.id} cabin={cabin} />;
           }}
