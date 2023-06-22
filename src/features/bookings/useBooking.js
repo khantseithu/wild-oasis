@@ -4,7 +4,6 @@ import { getBooking } from '../../services/apiBookings';
 
 export function useBooking() {
   const { id: bookingId } = useParams();
-  console.log(bookingId);
 
   const {
     isLoading,
