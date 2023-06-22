@@ -17,6 +17,7 @@ import {
 } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import { useCheckout } from '../check-in-out/useCheckout';
+import { useDeleteBooking } from './useDeleteBooking';
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -61,6 +62,7 @@ function BookingRow({
 }) {
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const statusToTagName = {
     unconfirmed: 'blue',
     'checked-in': 'green',
@@ -132,8 +134,8 @@ function BookingRow({
         <Modal.Window name="delete">
           <ConfirmDelete
             resourceName="booking"
-            // disabled={isDeleting}
-            // onConfirm={() => deleteBooking(bookingId)}
+            disabled={isDeleting}
+            onConfirm={() => deleteBooking(bookingId)}
           />
         </Modal.Window>
       </Modal>
