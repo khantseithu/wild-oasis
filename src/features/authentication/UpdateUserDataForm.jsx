@@ -43,6 +43,7 @@ function UpdateUserDataForm() {
           type="text"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
+          disabled={isUpdating}
           id="fullName"
         />
       </FormRow>
@@ -51,13 +52,19 @@ function UpdateUserDataForm() {
           id="avatar"
           accept="image/*"
           onChange={(e) => setAvatar(e.target.files[0])}
+          disabled={isUpdating}
         />
       </FormRow>
       <FormRow>
-        <Button type="reset" variation="secondary" onClick={handleCancel}>
+        <Button
+          type="reset"
+          variation="secondary"
+          onClick={handleCancel}
+          disabled={isUpdating}
+        >
           Cancel
         </Button>
-        <Button>Update account</Button>
+        <Button disabled={isUpdating}>Update account</Button>
       </FormRow>
     </Form>
   );
