@@ -25,7 +25,6 @@ const StyledSalesChart = styled(DashboardBox)`
 
 export default function SalesChart({ bookings, numDays }) {
   const { isDarkMode } = useDarkMode();
-  console.log(bookings, numDays);
   const allDates = eachDayOfInterval({
     start: subDays(new Date(), numDays - 1),
     end: new Date(),
