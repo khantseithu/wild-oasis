@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import Button from '../../ui/Button';
-import Form from '../../ui/Form';
-import Input from '../../ui/Input';
-import SpinnerMini from '../../ui/SpinnerMini';
-import FormRowVertical from '../../ui/FormRowVertical';
-import useLogin from './useLogin';
+import { useState } from "react";
+import Button from "../../ui/Button";
+import Form from "../../ui/Form";
+import Input from "../../ui/Input";
+import SpinnerMini from "../../ui/SpinnerMini";
+import FormRowVertical from "../../ui/FormRowVertical";
+import useLogin from "./useLogin";
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("yemomeg203@muzitp.com");
+  const [password, setPassword] = useState("helloworld");
   const { login, isLoading } = useLogin();
 
   function handleSubmit(e) {
@@ -41,7 +41,7 @@ function LoginForm() {
       </FormRowVertical>
       <FormRowVertical>
         <Button size="large" disabled={isLoading}>
-          {!isLoading ? 'Login' : <SpinnerMini />}
+          {!isLoading ? "Login" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
     </Form>
